@@ -3,7 +3,7 @@ import {
   createImageUrlBuilder,
   type SanityImageSource,
 } from "@sanity/image-url";
-import { client } from "@/lib/sanity";
+import { client } from "@/lib/sanity/client";
 import Link from "next/link";
 
 // const POST_QUERY = `*[_type == "post" && slug.current == $slug][0]`;

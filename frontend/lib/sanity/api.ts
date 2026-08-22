@@ -1,11 +1,24 @@
+import { client } from "./client";
 
-
-import {client} from './client'
-
-const POSTS_QUERY = `*[_type == "post"]{ _id, title , slug}`;
+const POSTS_QUERY = `*[
+  _type == "post"
+] | order(publishedAt desc) {
+  _id,
+  title,
+  slug,
+  coverImage,
+  content,
+  publishedAt,
+  featured,
+  category-> {
+    _id,
+    name,
+    slug
+  }
+}`;
 
 export async function getPosts() {
-  return client.fetch(POSTS_QUERY)
+  return client.fetch(POSTS_QUERY);
 }
 
 const FEATURED_POST_QUERY = `*[
@@ -23,8 +36,14 @@ const FEATURED_POST_QUERY = `*[
     slug
   },
   publishedAt
-}`
+}`;
 
 export async function getFeaturedPost() {
-    return client.fetch(FEATURED_POST_QUERY)
+  return client.fetch(FEATURED_POST_QUERY);
+}
+
+const CATEGORIES_QUERY = `*[_type == "category"]{ _id, name, slug }`;
+
+export async function getCategories() {
+  return client.fetch(CATEGORIES_QUERY);
 }
