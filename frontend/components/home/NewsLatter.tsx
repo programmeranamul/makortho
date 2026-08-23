@@ -1,6 +1,6 @@
 "use client"
 
-import { Moon, Search, Sun, Menu, X, ArrowUpRight, Mail } from "lucide-react";
+import {  Mail } from "lucide-react";
 
 
 export default function NewsLatter() {

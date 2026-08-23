@@ -17,12 +17,14 @@ export default async function Home() {
   const featuredPost = await getFeaturedPost();
   return (
     <>
+    <main>
       <Hero />
 
       <FeaturePost posts={featuredPost} />
       <TheLatest posts={posts} categories={categories} />
       <About />
-      <NewsLatter />
+      <NewsLatter />      
+    </main>
     </>
   );
 }
