@@ -47,3 +47,19 @@ const CATEGORIES_QUERY = `*[_type == "category"]{ _id, name, slug }`;
 export async function getCategories() {
   return client.fetch(CATEGORIES_QUERY);
 }
+
+//blog page
+const POST_QUERY = `*[
+  _type == "post" &&
+  slug.current == $slug
+][0] {_id,title,slug,coverImage, content, category-> { _id, name, slug, description },
+  publishedAt,featured, seo {
+    metaTitle,
+    metaDescription,
+    ogImage
+  }
+}`;
+
+export async function getPostDetails(slug: string) {
+  return client.fetch(POST_QUERY, { slug });
+}
