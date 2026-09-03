@@ -13,6 +13,7 @@ import {
   Share2,
 } from "lucide-react";
 import { portableTextComponents } from "@/components/posts/PortableTextComponents";
+import ShareTools from "@/components/posts/ShareTools";
 
 const recent = [
   {
@@ -88,138 +89,9 @@ const related = [
   },
 ];
 
-function ArticleBody() {
-  return (
-    <div className="article-body">
-      <p>
-        Blood sugar is one of the body&apos;s most closely watched signals. It
-        changes throughout the day in response to food, movement, sleep, stress,
-        and medication. A single reading is useful context, but it rarely tells
-        the whole story.
-      </p>
-      <h2 id="section-1">What blood sugar means</h2>
-      <p>
-        Glucose is the main sugar in your bloodstream and a primary source of
-        energy for your cells. Insulin helps move glucose from your blood into
-        those cells. When that system is working well, levels rise after a meal
-        and gradually return toward your usual range.
-      </p>
-      <p>
-        For many adults, the goal is not a perfectly flat line. Healthy
-        variation is expected. What matters most is the pattern over time and
-        how those readings fit with your symptoms, medical history, and care
-        plan.
-      </p>
-      <blockquote>
-        Numbers are clues, not a verdict. The most useful measurement is the one
-        you can understand in context.
-      </blockquote>
-      <h2 id="section-2">When numbers matter</h2>
-      <p>
-        Clinicians commonly discuss fasting glucose, readings taken after meals,
-        and A1C. A fasting reading reflects your body after not eating
-        overnight, while an A1C estimates your average glucose over roughly
-        three months.
-      </p>
-      <h3>Look for patterns, not isolated spikes</h3>
-      <p>
-        A higher reading after a meal can be normal, especially after a meal
-        rich in carbohydrates. Repeated highs, unexpected lows, or a major
-        change from your usual pattern are worth bringing to your clinician.
-        Keep a short log with the time, meal, activity, and symptoms so the
-        conversation is specific.
-      </p>
-      <ul>
-        <li>Measure at the times recommended for your care plan.</li>
-        <li>Write down anything that may have changed your reading.</li>
-        <li>Bring your meter or app history to appointments.</li>
-      </ul>
-      <figure>
-        <img
-          src="https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=1100&q=85"
-          alt="Person checking a health measurement at home"
-        />
-        <figcaption>
-          Tracking a few consistent details can make trends easier to see.
-        </figcaption>
-      </figure>
-      <h2 id="section-3">Building steadier habits</h2>
-      <p>
-        Small, repeatable choices often support steadier blood sugar better than
-        an all-or-nothing plan. Aim for meals with protein, fiber, and
-        satisfying carbohydrates; take a short walk when it feels safe; and make
-        sleep a regular part of your health routine.
-      </p>
-      <h3>A practical starting point</h3>
-      <ol>
-        <li>Choose one meal to make more balanced this week.</li>
-        <li>Add ten minutes of comfortable movement after a meal.</li>
-        <li>Review the pattern after two weeks rather than judging one day.</li>
-      </ol>
-      <p>
-        Stress also has a place in the conversation. Stress hormones can affect
-        glucose even when you are eating and moving as usual. A few minutes of
-        breathing, a conversation with someone you trust, or a consistent
-        bedtime can be meaningful supports.
-      </p>
-      <h2 id="section-4">When to call your clinician</h2>
-      <p>
-        Reach out if readings are repeatedly outside the range you were given,
-        if medication side effects make daily life difficult, or if you are
-        unsure how to respond to a reading. Seek urgent care for severe
-        confusion, fainting, trouble breathing, or symptoms that feel sudden and
-        serious.
-      </p>
-      <p>
-        Your care plan should be personal. This article is a starting point for
-        a thoughtful conversation, not a replacement for one.
-      </p>
-    </div>
-  );
-}
 
-// function ShareTools() {
-//   const [copied, setCopied] = useState(false);
-//   const copy = async () => {
-//     await navigator.clipboard?.writeText(window.location.href);
-//     setCopied(true);
-//     window.setTimeout(() => setCopied(false), 1800);
-//   };
-//   return (
-//     <div className="article-share" aria-label="Share this article">
-//       <span>
-//         <Share2 size={15} /> Share
-//       </span>
-//       <button onClick={copy} aria-label="Copy article link">
-//         {copied ? <Check size={15} /> : <Clipboard size={15} />}
-//       </button>
-//       <a
-//         href="https://www.facebook.com/sharer/sharer.php"
-//         target="_blank"
-//         rel="noreferrer"
-//         aria-label="Share on Facebook"
-//       >
-//         <Link2 size={15} />
-//       </a>
-//       <a
-//         href="https://www.linkedin.com/sharing/share-offsite/"
-//         target="_blank"
-//         rel="noreferrer"
-//         aria-label="Share on LinkedIn"
-//       >
-//         <Link2 size={15} />
-//       </a>
-//       <a
-//         href="https://wa.me/?text=Understanding%20Blood%20Sugar%20Levels"
-//         target="_blank"
-//         rel="noreferrer"
-//         aria-label="Share on WhatsApp"
-//       >
-//         <Mail size={15} />
-//       </a>
-//     </div>
-//   );
-// }
+
+
 
 export default async function PostPage({
   params,
@@ -257,8 +129,6 @@ export default async function PostPage({
             />
 
             <div className="article-reading">
-              {/* <ArticleBody /> */}
-              {/* <PortableText value={article.content} /> */}
               <div className="">
                 <PortableText
                   value={article.content}
@@ -266,7 +136,7 @@ export default async function PostPage({
                 />
               </div>
 
-              {/* <ShareTools /> */}
+              <ShareTools />
               <div className="medical-disclaimer">
                 <strong>Medical disclaimer</strong>
                 <span>
