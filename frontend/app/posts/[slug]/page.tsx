@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { portableTextComponents } from "@/components/posts/PortableTextComponents";
 import ShareTools from "@/components/posts/ShareTools";
+import BlogPageSidebar from "@/components/posts/Sitebar";
 
 const recent = [
   {
@@ -184,9 +185,7 @@ export default async function PostPage({
               <Link2 size={15} /> Back to all articles
             </a>
           </article>
-          {/* <div className="desktop-sidebar">
-            <Sidebar active={active} />
-          </div> */}
+          <BlogPageSidebar />
         </div>
       </main>
 
