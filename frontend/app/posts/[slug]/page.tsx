@@ -8,7 +8,6 @@ import {
   getRecentPosts,
   getSidebarCategories,
 } from "@/lib/sanity/api";
-import { formatDate } from "@/lib/formateDateTime";
 import {
   ArrowLeft,
   ArrowRight,
@@ -22,16 +21,9 @@ import { portableTextComponents } from "@/components/posts/PortableTextComponent
 import ShareTools from "@/components/posts/ShareTools";
 import BlogPageSidebar from "@/components/posts/Sitebar";
 import MedicalDisclaimer from "@/components/posts/MedicalDisclaimer";
+import RelatedPosts from "@/components/posts/RelatedPosts";
 
-type RelatedPost = {
-  _id: string;
-  title: string;
-  slug: string;
-  imageUrl?: string;
-  imageAlt?: string;
-  category?: string;
-  publishedAt: string;
-};
+
 
 export default async function PostPage({
   params,
@@ -94,36 +86,7 @@ export default async function PostPage({
               <MedicalDisclaimer />
               
             </div>
-            {relatedPosts.length > 0 && (
-              <section className="related-section">
-                <div className="section-kicker">
-                  <span>Keep reading</span>
-                  <span className="rule" />
-                </div>
-                <h2>Related articles</h2>
-                <div className="related-grid">
-                  {relatedPosts.map((post: RelatedPost) => (
-                    <Link
-                      className="related-card"
-                      href={`/posts/${post.slug}`}
-                      key={post._id}
-                    >
-                      {post.imageUrl && (
-                        <Image
-                          src={post.imageUrl}
-                          alt={post.imageAlt || post.title}
-                          width={700}
-                          height={450}
-                        />
-                      )}
-                      <span className="eyebrow">{post.category}</span>
-                      <h3>{post.title}</h3>
-                      <small>{formatDate(post.publishedAt)}</small>
-                    </Link>
-                  ))}
-                </div>
-              </section>
-            )}
+            <RelatedPosts relatedPosts={relatedPosts} />
             <nav className="article-nav" aria-label="Article navigation">
               <a href="/post/seasonal-illnesses">
                 <small>
