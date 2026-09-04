@@ -21,6 +21,7 @@ import {
 import { portableTextComponents } from "@/components/posts/PortableTextComponents";
 import ShareTools from "@/components/posts/ShareTools";
 import BlogPageSidebar from "@/components/posts/Sitebar";
+import MedicalDisclaimer from "@/components/posts/MedicalDisclaimer";
 
 type RelatedPost = {
   _id: string;
@@ -87,16 +88,11 @@ export default async function PostPage({
                   value={article.content}
                   components={portableTextComponents}
                 />
-              </div>
+       ``       </div>
 
               <ShareTools />
-              <div className="medical-disclaimer">
-                <strong>Medical disclaimer</strong>
-                <span>
-                  This article is for general educational purposes only and does
-                  not replace professional medical advice.
-                </span>
-              </div>
+              <MedicalDisclaimer />
+              
             </div>
             {relatedPosts.length > 0 && (
               <section className="related-section">
