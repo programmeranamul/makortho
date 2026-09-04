@@ -1,5 +1,28 @@
 import { client } from "./client";
 import { defineQuery } from "next-sanity";
+import { cache } from "react";
+import type { ArbitraryTypedObject, PortableTextBlock } from "@portabletext/types";
+import type { SanityImageSource } from "@sanity/image-url";
+
+type SanityImage = SanityImageSource & { alt?: string };
+
+export type PostDetails = {
+  _id: string;
+  title: string;
+  coverImage?: SanityImage;
+  content?: Array<PortableTextBlock | ArbitraryTypedObject>;
+  category?: { _id: string; name: string; slug?: { current?: string } };
+  publishedAt?: string;
+  date?: string;
+  read?: string;
+  author?: string;
+  updated?: string;
+  seo?: {
+    metaTitle?: string;
+    metaDescription?: string;
+    ogImage?: SanityImage;
+  };
+};
 
 const POSTS_QUERY = `*[
   _type == "post"
@@ -144,7 +167,7 @@ export async function getAdjacentPosts(
 }
 
 //blog page
-const POST_QUERY = `*[
+const POST_QUERY = defineQuery(`*[
   _type == "post" &&
   slug.current == $slug
 ][0] {_id,title,slug,coverImage, content, category-> { _id, name, slug, description },
@@ -153,8 +176,8 @@ const POST_QUERY = `*[
     metaDescription,
     ogImage
   }
-}`;
+}`);
 
-export async function getPostDetails(slug: string) {
-  return client.fetch(POST_QUERY, { slug });
-}
+export const getPostDetails = cache(async (slug: string) =>
+  client.fetch<PostDetails | null>(POST_QUERY, { slug }),
+);
