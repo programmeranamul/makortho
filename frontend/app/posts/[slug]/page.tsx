@@ -2,7 +2,13 @@ import { PortableText } from "@portabletext/react";
 import Image from "next/image";
 import Link from "next/link";
 import { urlFor } from "@/lib/sanity/image";
-import { getPostDetails } from "@/lib/sanity/api";
+import {
+  getPostDetails,
+  getRelatedPosts,
+  getRecentPosts,
+  getSidebarCategories,
+} from "@/lib/sanity/api";
+import { formatDate } from "@/lib/formateDateTime";
 import {
   ArrowLeft,
   ArrowRight,
@@ -16,83 +22,15 @@ import { portableTextComponents } from "@/components/posts/PortableTextComponent
 import ShareTools from "@/components/posts/ShareTools";
 import BlogPageSidebar from "@/components/posts/Sitebar";
 
-const recent = [
-  {
-    title: "How to Maintain a Healthy Heart",
-    date: "Aug 08, 2026",
-    category: "Cardiology",
-    image:
-      "https://images.unsplash.com/photo-1628348070889-cb656235b4eb?auto=format&fit=crop&w=240&q=80",
-    slug: "healthy-heart",
-  },
-  {
-    title: "Healthy Eating Habits for Adults",
-    date: "Jul 29, 2026",
-    category: "Nutrition",
-    image:
-      "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=240&q=80",
-    slug: "healthy-eating",
-  },
-  {
-    title: "When Should You Check Your Blood Pressure?",
-    date: "Jul 18, 2026",
-    category: "Preventive Care",
-    image:
-      "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?auto=format&fit=crop&w=240&q=80",
-    slug: "check-blood-pressure",
-  },
-  {
-    title: "Understanding Common Seasonal Illnesses",
-    date: "Jul 06, 2026",
-    category: "General Medicine",
-    image:
-      "https://images.unsplash.com/photo-1584362917165-526a968579e8?auto=format&fit=crop&w=240&q=80",
-    slug: "seasonal-illnesses",
-  },
-];
-const categories = [
-  ["Diabetes", "8"],
-  ["Cardiology", "6"],
-  ["Nutrition", "5"],
-  ["General Medicine", "4"],
-  ["Preventive Care", "3"],
-];
-const sections = [
-  "What blood sugar means",
-  "When numbers matter",
-  "Building steadier habits",
-  "When to call your clinician",
-];
-const related = [
-  {
-    title: "Diabetes and Exercise",
-    category: "Diabetes",
-    date: "Jun 30, 2026",
-    image:
-      "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=700&q=82",
-    slug: "diabetes-and-exercise",
-  },
-  {
-    title: "Healthy Eating for Blood Sugar",
-    category: "Nutrition",
-    date: "Jun 22, 2026",
-    image:
-      "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=700&q=82",
-    slug: "healthy-eating-blood-sugar",
-  },
-  {
-    title: "Understanding Blood Pressure",
-    category: "Preventive Care",
-    date: "Jun 12, 2026",
-    image:
-      "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=700&q=82",
-    slug: "understanding-blood-pressure",
-  },
-];
-
-
-
-
+type RelatedPost = {
+  _id: string;
+  title: string;
+  slug: string;
+  imageUrl?: string;
+  imageAlt?: string;
+  category?: string;
+  publishedAt: string;
+};
 
 export default async function PostPage({
   params,
@@ -102,6 +40,20 @@ export default async function PostPage({
   const resolvedParams = await params;
 
   const article = await getPostDetails(resolvedParams.slug);
+  const [recentPosts, sidebarCategories, relatedPosts] = await Promise.all([
+    getRecentPosts(article._id),
+    getSidebarCategories(),
+    getRelatedPosts(article._id, article.category?._id),
+  ]);
+  const sections = (article.content ?? [])
+    .filter((block: { _type?: string; style?: string; _key?: string }) =>
+      block._type === "block" && block.style === "h2" && Boolean(block._key),
+    )
+    .map((block: { _key: string; children?: { text?: string }[] }) => ({
+      id: `section-${block._key}`,
+      title: (block.children ?? []).map((child) => child.text ?? "").join(""),
+    }))
+    .filter((section: { title: string }) => Boolean(section.title));
   console.log("article", article);
 
   const articleImageUrl = urlFor(article.coverImage).width(550).url()
@@ -146,27 +98,36 @@ export default async function PostPage({
                 </span>
               </div>
             </div>
-            <section className="related-section">
-              <div className="section-kicker">
-                <span>Keep reading</span>
-                <span className="rule" />
-              </div>
-              <h2>Related articles</h2>
-              <div className="related-grid">
-                {related.map((post) => (
-                  <a
-                    className="related-card"
-                    href={`/post/${post.slug}`}
-                    key={post.slug}
-                  >
-                    <img src={post.image} alt="" />
-                    <span className="eyebrow">{post.category}</span>
-                    <h3>{post.title}</h3>
-                    <small>{post.date}</small>
-                  </a>
-                ))}
-              </div>
-            </section>
+            {relatedPosts.length > 0 && (
+              <section className="related-section">
+                <div className="section-kicker">
+                  <span>Keep reading</span>
+                  <span className="rule" />
+                </div>
+                <h2>Related articles</h2>
+                <div className="related-grid">
+                  {relatedPosts.map((post: RelatedPost) => (
+                    <Link
+                      className="related-card"
+                      href={`/posts/${post.slug}`}
+                      key={post._id}
+                    >
+                      {post.imageUrl && (
+                        <Image
+                          src={post.imageUrl}
+                          alt={post.imageAlt || post.title}
+                          width={700}
+                          height={450}
+                        />
+                      )}
+                      <span className="eyebrow">{post.category}</span>
+                      <h3>{post.title}</h3>
+                      <small>{formatDate(post.publishedAt)}</small>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            )}
             <nav className="article-nav" aria-label="Article navigation">
               <a href="/post/seasonal-illnesses">
                 <small>
@@ -181,11 +142,15 @@ export default async function PostPage({
                 <b>How to maintain a healthy heart</b>
               </a>
             </nav>
-            <a className="back-blog" href="/#articles">
+            <Link className="back-blog" href="/#articles">
               <Link2 size={15} /> Back to all articles
-            </a>
+            </Link>
           </article>
-          <BlogPageSidebar />
+          <BlogPageSidebar
+            sections={sections}
+            recentPosts={recentPosts}
+            categories={sidebarCategories}
+          />
         </div>
       </main>
 

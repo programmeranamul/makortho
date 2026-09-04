@@ -10,8 +10,11 @@ export const portableTextComponents: PortableTextComponents = {
         {children}{" "}
       </p>
     ),
-    h2: ({ children }) => (
-      <h2 className="!mt-10 !mb-4 text-2xl font-bold  md:text-3xl">
+    h2: ({ children, value }) => (
+      <h2
+        id={`section-${value._key}`}
+        className="!mt-10 !mb-4 text-2xl font-bold md:text-3xl"
+      >
         {" "}
         {children}{" "}
       </h2>

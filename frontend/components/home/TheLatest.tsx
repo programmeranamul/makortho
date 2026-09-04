@@ -4,9 +4,9 @@ import { Search } from "lucide-react";
 import { useMemo, useState } from "react";
 import PostCard from "./../PostCard";
 
-function TheLatest({ posts, categories }) {
+function TheLatest({ posts, categories, initialCategory = "All" }) {
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState("All");
+  const [category, setCategory] = useState(initialCategory);
 
   const filteredPosts = useMemo(() => {
     return posts.filter((post) => {

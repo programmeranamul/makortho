@@ -11,7 +11,12 @@ import TheLatest from "@/components/home/TheLatest";
 import About from "@/components/home/About";
 import NewsLatter from "@/components/home/NewsLatter";
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string }>;
+}) {
+  const { category: initialCategory } = await searchParams;
   const [posts, categories] = await Promise.all([getPosts(), getCategories()]);
 
   const featuredPost = await getFeaturedPost();
@@ -21,7 +26,18 @@ export default async function Home() {
       <Hero />
 
       <FeaturePost posts={featuredPost} />
-      <TheLatest posts={posts} categories={categories} />
+      <TheLatest
+        posts={posts}
+        categories={categories}
+        initialCategory={
+          categories.some(
+            (category: { slug?: { current?: string } }) =>
+              category.slug?.current === initialCategory,
+          )
+            ? initialCategory
+            : "All"
+        }
+      />
       <About />
       <NewsLatter />      
     </main>
