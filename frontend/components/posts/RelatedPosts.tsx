@@ -1,5 +1,3 @@
-import React from 'react'
-import {getRelatedPosts} from "@/lib/sanity/api";
 import Link from 'next/link';
 import Image from 'next/image';
 import { formatDate } from "@/lib/formateDateTime";

@@ -107,6 +107,42 @@ export async function getRelatedPosts(
   return client.fetch(RELATED_POSTS_QUERY, { currentPostId, categoryId });
 }
 
+const ADJACENT_POSTS_QUERY = defineQuery(`{
+  "previous": *[
+    _type == "post" &&
+    defined(slug.current) &&
+    defined(publishedAt) &&
+    (publishedAt < $publishedAt ||
+      (publishedAt == $publishedAt && _id < $currentPostId))
+  ] | order(publishedAt desc, _id desc)[0] {
+    _id,
+    title,
+    "slug": slug.current
+  },
+  "next": *[
+    _type == "post" &&
+    defined(slug.current) &&
+    defined(publishedAt) &&
+    (publishedAt > $publishedAt ||
+      (publishedAt == $publishedAt && _id > $currentPostId))
+  ] | order(publishedAt asc, _id asc)[0] {
+    _id,
+    title,
+    "slug": slug.current
+  }
+}`);
+
+export async function getAdjacentPosts(
+  currentPostId: string,
+  publishedAt?: string,
+) {
+  if (!publishedAt) {
+    return { previous: null, next: null };
+  }
+
+  return client.fetch(ADJACENT_POSTS_QUERY, { currentPostId, publishedAt });
+}
+
 //blog page
 const POST_QUERY = `*[
   _type == "post" &&

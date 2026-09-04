@@ -3,25 +3,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { urlFor } from "@/lib/sanity/image";
 import {
+  getAdjacentPosts,
   getPostDetails,
   getRelatedPosts,
   getRecentPosts,
   getSidebarCategories,
 } from "@/lib/sanity/api";
-import {
-  ArrowLeft,
-  ArrowRight,
-  Check,
-  Clipboard,
-  Link2,
-  Mail,
-  Share2,
-} from "lucide-react";
+import { Link2 } from "lucide-react";
 import { portableTextComponents } from "@/components/posts/PortableTextComponents";
 import ShareTools from "@/components/posts/ShareTools";
 import BlogPageSidebar from "@/components/posts/Sitebar";
 import MedicalDisclaimer from "@/components/posts/MedicalDisclaimer";
 import RelatedPosts from "@/components/posts/RelatedPosts";
+import ArticleNavigation from "@/components/posts/ArticleNavigation";
 
 
 
@@ -33,10 +27,11 @@ export default async function PostPage({
   const resolvedParams = await params;
 
   const article = await getPostDetails(resolvedParams.slug);
-  const [recentPosts, sidebarCategories, relatedPosts] = await Promise.all([
+  const [recentPosts, sidebarCategories, relatedPosts, adjacentPosts] = await Promise.all([
     getRecentPosts(article._id),
     getSidebarCategories(),
     getRelatedPosts(article._id, article.category?._id),
+    getAdjacentPosts(article._id, article.publishedAt),
   ]);
   const sections = (article.content ?? [])
     .filter((block: { _type?: string; style?: string; _key?: string }) =>
@@ -80,27 +75,17 @@ export default async function PostPage({
                   value={article.content}
                   components={portableTextComponents}
                 />
-       ``       </div>
+             </div>
 
-              <ShareTools />
+              <ShareTools articleTitle={article.title} />
               <MedicalDisclaimer />
               
             </div>
             <RelatedPosts relatedPosts={relatedPosts} />
-            <nav className="article-nav" aria-label="Article navigation">
-              <a href="/post/seasonal-illnesses">
-                <small>
-                  <ArrowLeft size={14} /> Previous article
-                </small>
-                <b>Understanding common seasonal illnesses</b>
-              </a>
-              <a href="/post/healthy-heart">
-                <small>
-                  Next article <ArrowRight size={14} />
-                </small>
-                <b>How to maintain a healthy heart</b>
-              </a>
-            </nav>
+            <ArticleNavigation
+              previous={adjacentPosts.previous}
+              next={adjacentPosts.next}
+            />
             <Link className="back-blog" href="/#articles">
               <Link2 size={15} /> Back to all articles
             </Link>
@@ -113,26 +98,6 @@ export default async function PostPage({
         </div>
       </main>
 
-      {/* <main className="container mx-auto min-h-screen max-w-3xl p-8 flex flex-col gap-4">
-      <Link href="/" className="hover:underline">
-        ← Back to posts
-      </Link>
-      {postImageUrl && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <Image
-          src={postImageUrl}
-          alt={post.title}
-          className="aspect-video rounded-xl"
-          width="550"
-          height="310"
-        />
-      )}
-      <h1 className="text-4xl font-bold mb-8">{post.title}</h1>
-      <div className="prose">
-        <p>Published: {new Date(post.publishedAt).toLocaleDateString()}</p>
-        {Array.isArray(post.body) && <PortableText value={post.body} />}
-      </div>
-    </main> */}
     </>
   );
 }
