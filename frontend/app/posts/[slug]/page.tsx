@@ -132,14 +132,16 @@ export default async function PostPage({
               <p className="updated">Updated {article.updated}</p>
             </header>
             {articleImageUrl && (
-              <Image
-                priority
-                src={articleImageUrl}
-                alt={article.coverImage?.alt || article.title}
-                className="w-full h-auto object-cover rounded-xl"
-                width={550}
-                height={310}
-              />
+              <figure className="article-cover">
+                <Image
+                  priority
+                  src={articleImageUrl}
+                  alt={article.coverImage?.alt || article.title}
+                  className="w-full h-auto object-cover rounded-xl"
+                  width={550}
+                  height={310}
+                />
+              </figure>
             )}
 
             <div className="article-reading">
