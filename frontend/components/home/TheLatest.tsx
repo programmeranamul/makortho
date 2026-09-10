@@ -1,15 +1,49 @@
 "use client";
 
+import type { PortableTextBlock } from "@portabletext/types";
+import type { SanityImageSource } from "@sanity/image-url";
 import { Search } from "lucide-react";
 import { useMemo, useState } from "react";
 import PostCard from "./../PostCard";
 
-function TheLatest({ posts, categories, initialCategory = "All" }) {
+type Category = {
+  _id: string;
+  name: string;
+  slug: {
+    current: string;
+  };
+};
+
+type Post = {
+  _id: string;
+  title: string;
+  slug?: {
+    current?: string;
+  };
+  coverImage?: SanityImageSource;
+  content?: PortableTextBlock[];
+  category?: {
+    _id?: string;
+    name?: string;
+    slug?: {
+      current?: string;
+    };
+  };
+  publishedAt?: string;
+};
+
+type TheLatestProps = {
+  posts: Post[];
+  categories: Category[];
+  initialCategory?: string;
+};
+
+function TheLatest({ posts, categories, initialCategory = "All" }: TheLatestProps) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState(initialCategory);
 
   const filteredPosts = useMemo(() => {
-    return posts.filter((post) => {
+    return posts.filter((post: Post) => {
       // Category filtering
       const matchesCategory =
         category === "All" ||
@@ -61,7 +95,7 @@ function TheLatest({ posts, categories, initialCategory = "All" }) {
         </button>
 
         {/* Categories */}
-        {categories.map((item) => (
+        {categories.map((item: Category) => (
           <button
             key={item._id}
             className={
@@ -82,7 +116,7 @@ function TheLatest({ posts, categories, initialCategory = "All" }) {
       {filteredPosts.length > 0 ? (
         <div className="post-grid">
 
-          {filteredPosts.map((post) => (
+          {filteredPosts.map((post: Post) => (
             <PostCard
               key={post._id}
               post={post}

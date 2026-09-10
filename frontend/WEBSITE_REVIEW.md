@@ -32,11 +32,7 @@ This matters because the project is already configured to ignore TypeScript buil
 
 ### High priority
 
-1. Build safety is currently weakened
-   - next.config.ts sets typescript.ignoreBuildErrors to true.
-   - This allows TypeScript issues to pass through production builds.
-   - In practice, this is risky for a content-driven marketing site where small runtime issues can become visible to users.
-   - Files: next.config.ts, lib/sanity/image.ts
+
 
 2. There is a real lint error in the Sanity image helper
    - lib/sanity/image.ts defines urlFor(source: any).
