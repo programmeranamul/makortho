@@ -13,20 +13,20 @@ export const portableTextComponents: PortableTextComponents = {
     h2: ({ children, value }) => (
       <h2
         id={`section-${value._key}`}
-        className="!mt-10 !mb-4 text-2xl font-bold md:text-3xl"
+        className="mt-10! mb-4! text-2xl font-bold md:text-3xl"
       >
         {" "}
         {children}{" "}
       </h2>
     ),
     h3: ({ children }) => (
-      <h3 className="!mt-8 !mb-3 text-xl font-semibold md:text-2xl">
+      <h3 className="mt-8! mb-3! text-xl font-semibold md:text-2xl">
         {" "}
         {children}{" "}
       </h3>
     ),
     h4: ({ children }) => (
-      <h4 className="!mt-7 !mb-3 text-lg font-semibold"> {children} </h4>
+      <h4 className="mt-7! mb-3! text-lg font-semibold"> {children} </h4>
     ),
     blockquote: ({ children }) => (
       <blockquote className="my-7 border-l-4 pl-5 text-lg italic leading-8 text-muted-foreground">

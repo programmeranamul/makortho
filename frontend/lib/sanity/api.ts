@@ -13,10 +13,8 @@ export type PostDetails = {
   content?: Array<PortableTextBlock | ArbitraryTypedObject>;
   category?: { _id: string; name: string; slug?: { current?: string } };
   publishedAt?: string;
-  date?: string;
-  read?: string;
   author?: string;
-  updated?: string;
+  updatedAt?: string;
   seo?: {
     metaTitle?: string;
     metaDescription?: string;
@@ -171,7 +169,10 @@ const POST_QUERY = defineQuery(`*[
   _type == "post" &&
   slug.current == $slug
 ][0] {_id,title,slug,coverImage, content, category-> { _id, name, slug, description },
-  publishedAt,featured, seo {
+  publishedAt,
+  "updatedAt": _updatedAt,
+  author,
+  featured, seo {
     metaTitle,
     metaDescription,
     ogImage

@@ -1,9 +1,4 @@
-import Image from "next/image";
-
-import { client } from "@/lib/sanity/client";
 import { getPosts, getFeaturedPost, getCategories } from "@/lib/sanity/api";
-import { SanityDocument } from "next-sanity";
-import Link from "next/link";
 
 import Hero from "@/components/home/Hero";
 import FeaturePost from "@/components/home/FeaturePost";

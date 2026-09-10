@@ -1,8 +1,8 @@
 "use client";
 
-import {useState} from "react"
-import { Moon, Search, Sun, Menu, X, ArrowUpRight, Mail } from "lucide-react";
-import ThemeToggle from "./ThemeToggle"
+import { useState } from "react";
+import { Search, Menu, X } from "lucide-react";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);

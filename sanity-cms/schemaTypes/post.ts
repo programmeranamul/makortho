@@ -106,19 +106,12 @@ export default defineType({
     // Author
     // --------------------------------
 
-    // defineField({
-    //   name: 'author',
-    //   title: 'Author',
-    //   type: 'reference',
-
-    //   to: [
-    //     {
-    //       type: 'doctor',
-    //     },
-    //   ],
-
-    //   validation: (Rule) => Rule.required(),
-    // }),
+    defineField({
+      name: 'author',
+      title: 'Author',
+      type: 'string',
+      initialValue: 'Dr. Maya Chen',
+    }),
 
     // --------------------------------
     // Publishing

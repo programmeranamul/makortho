@@ -14,6 +14,8 @@ import {
 } from "@/lib/sanity/api";
 import { Link2 } from "lucide-react";
 import { portableTextComponents } from "@/components/posts/PortableTextComponents";
+import { getReadingTime } from "@/lib/article";
+import { formatDate } from "@/lib/formateDateTime";
 import ShareTools from "@/components/posts/ShareTools";
 import BlogPageSidebar from "@/components/posts/Sitebar";
 import MedicalDisclaimer from "@/components/posts/MedicalDisclaimer";
@@ -61,11 +63,11 @@ export async function generateMetadata({
       description,
       type: "article",
       publishedTime: article.publishedAt,
+      modifiedTime: article.updatedAt,
       images: socialImage ? [{ url: socialImage }] : undefined,
     },
   };
 }
-
 
 
 export default async function PostPage({
@@ -114,6 +116,7 @@ export default async function PostPage({
     })
     .filter((section: { title: string }) => Boolean(section.title));
   const articleImageUrl = getImageUrl(article.coverImage, 550, 310);
+  const readingTime = getReadingTime(article.content ?? []);
   return (
     <>
       <main className="article-page page-width">
@@ -125,11 +128,13 @@ export default async function PostPage({
               </span>
               <h1>{article.title}</h1>
               <div className="article-byline">
-                <span>{article.date}</span>
-                <span>{article.read}</span>
-                <span>{article.author}</span>
+                <span>{article.publishedAt ? formatDate(article.publishedAt) : ""}</span>
+                <span>{readingTime}</span>
+                <span>{article.author || "Dr. Maya Chen"}</span>
               </div>
-              <p className="updated">Updated {article.updated}</p>
+              {article.updatedAt && (
+                <p className="updated">Updated {formatDate(article.updatedAt)}</p>
+              )}
             </header>
             {articleImageUrl && (
               <figure className="article-cover">
