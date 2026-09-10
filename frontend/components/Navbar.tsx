@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { Search, Menu, X } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
@@ -9,35 +10,35 @@ export default function Navbar() {
   return (
     <header className="site-header">
       <div className="nav-wrap">
-        <a href="#top" className="brand">
+        <Link href="/" className="brand" onClick={() => setOpen(false)}>
           <span className="brand-mark">MC</span>
           <span>
             <strong>Dr. Maya Chen</strong>
             <small>Internal Medicine</small>
           </span>
-        </a>
+        </Link>
         <nav className={open ? "nav-links open" : "nav-links"}>
-          <a href="#top" onClick={() => setOpen(false)}>
+          <Link href="/" onClick={() => setOpen(false)}>
             Home
-          </a>
-          <a href="#articles" onClick={() => setOpen(false)}>
+          </Link>
+          <Link href="/#articles" onClick={() => setOpen(false)}>
             Blog
-          </a>
-          <a href="#categories" onClick={() => setOpen(false)}>
+          </Link>
+          <Link href="/#categories" onClick={() => setOpen(false)}>
             Categories
-          </a>
-          <a href="#about" onClick={() => setOpen(false)}>
+          </Link>
+          <Link href="/#about" onClick={() => setOpen(false)}>
             About
-          </a>
+          </Link>
         </nav>
         <div className="nav-actions">
-          <a
-            href="#articles"
+          <Link
+            href="/#articles"
             className="search-link"
             aria-label="Search articles"
           >
             <Search size={18} />
-          </a>
+          </Link>
           <ThemeToggle />
           <button
             className="menu-button icon-button"

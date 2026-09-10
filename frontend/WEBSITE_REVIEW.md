@@ -43,16 +43,7 @@ This matters because the project is already configured to ignore TypeScript buil
    - ESLint reports this as an explicit-any violation.
    - Even though it is small, this is a recurring indicator that the app is not fully clean at a TypeScript quality level.
 
-3. Static content is still embedded in presentation components
-   - The navbar, footer, about section, and doctor identity are hard-coded rather than driven by a Sanity site-settings document.
-   - This makes updates slow and creates content drift between the brand and the CMS.
-   - Files: components/Navbar.tsx, components/Footer.tsx, components/home/About.tsx, app/layout.tsx
 
-4. Article styling rules exist but are not consistently applied
-   - The CSS file contains strong article-specific classes such as .article-cover, .article-body, .article-share, and .medical-disclaimer.
-   - The page layout does not consistently use the .article-body class on the main article content wrapper, so some of the published article styling is effectively disconnected.
-   - This reduces visual consistency and makes article formatting harder to maintain.
-   - Files: app/posts/[slug]/page.tsx, app/globals.css, components/posts/PortableTextComponents.tsx
 
 ### Medium priority
 
@@ -68,10 +59,7 @@ This matters because the project is already configured to ignore TypeScript buil
    - The app should prefer home-page anchor URLs such as /#articles when the user is on a post detail page.
    - Files: components/Navbar.tsx, components/Footer.tsx
 
-7. Static brand content does not match its image asset
-   - The About section says Dr. Maya Chen, but the profile image is a generic male doctor photograph.
-   - This creates a mismatch between identity and content and makes the site feel less authentic.
-   - File: components/home/About.tsx
+
 
 8. The default Next.js metadata is still in place
    - app/layout.tsx still exposes Create Next App metadata.
@@ -89,15 +77,6 @@ This matters because the project is already configured to ignore TypeScript buil
 12. Sanity configuration should be validated early
    - lib/sanity/client.ts reads projectId and dataset from environment variables without clear validation.
    - A missing value will fail later in a less helpful way.
-
-13. README is still generic and does not describe project setup
-   - The README still matches the default create-next-app project template rather than this medical editorial implementation.
-   - It does not explain required environment variables, Sanity setup, or local run commands.
-   - File: README.md
-
-14. Font setup is not fully aligned with the project theme
-   - Geist is registered in app/layout.tsx, but the CSS theme sets Inter as the default sans font.
-   - This creates inconsistency in the actual visual typography stack.
 
 15. Date safety is still fragile
    - The date formatter is not defensive enough for invalid or missing values.
