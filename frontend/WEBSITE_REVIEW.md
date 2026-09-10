@@ -53,12 +53,6 @@ This matters because the project is already configured to ignore TypeScript buil
    - This is a feature gap rather than a styling issue, but it matters for conversion and trust.
    - File: components/home/NewsLatter.tsx
 
-6. Navigation links are not robust on article pages
-   - The header and footer use anchor links like #articles, #about, and #categories.
-   - On individual article pages, those IDs are not present, which can create dead navigation states.
-   - The app should prefer home-page anchor URLs such as /#articles when the user is on a post detail page.
-   - Files: components/Navbar.tsx, components/Footer.tsx
-
 
 
 8. The default Next.js metadata is still in place
